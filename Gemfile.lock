@@ -1,8 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    bson (1.9.2)
+    bson_ext (1.9.2)
+      bson (~> 1.9.2)
     builder (3.2.2)
     mini_portile (0.5.2)
+    mongo (1.9.2)
+      bson (~> 1.9.2)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     rack (1.5.2)
@@ -18,7 +23,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext
   builder
   bundler
+  mongo
   nokogiri
   sinatra
