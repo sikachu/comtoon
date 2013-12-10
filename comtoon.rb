@@ -1,10 +1,10 @@
 require 'bundler/setup'
-require 'mongo'
 require 'net/http'
 require 'nokogiri'
 require 'time'
+require './db_connection'
 
-THAI_MONTHS = [nil] + %w(มกราคม กุมภาพันธ์ มีนาคม เมษายน พฤษภาคม มิถุนายน กรกฎาคม สิงหาคม กันยายน ตุลาคม พฤษจิกายน ธันวาคม)
+THAI_MONTHS = [nil] + %w(มกราคม กุมภาพันธ์ มีนาคม เมษายน พฤษภาคม มิถุนายน กรกฎาคม สิงหาคม กันยายน ตุลาคม พฤศจิกายน ธันวาคม)
 HOST = URI 'http://www.comtoon.com'
 COOKIE_INIT_PATH = '/v3/releaseChk.asp'
 GATEKEEPER_PATH = '/v3/release.asp'
@@ -12,20 +12,6 @@ RELEASE_DATA_PATH = '/database/w/hl/ct_index.asp'
 
 def http
   @http ||= Net::HTTP.new(HOST.hostname, HOST.port)
-end
-
-def db_connection
-  unless @db_connection
-    db = URI.parse(ENV['MONGOHQ_URL'] || 'mongodb://localhost/comtoon')
-    db_name = db.path.gsub(/^\//, '')
-    @db_connection = Mongo::Connection.new(db.host, db.port).db(db_name)
-    @db_connection.authenticate(db.user, db.password) unless db.user.nil?
-  end
-  @db_connection
-end
-
-def releases
-  db_connection["releases"]
 end
 
 # Fetch cookie
